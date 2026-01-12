@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import Swal from 'sweetalert2';
 
 // Components
@@ -23,6 +23,16 @@ export class List {
 
   #setListItems = signal<IListItems[]>(this.#parseItems());
   public getListItems = this.#setListItems.asReadonly();
+
+  public listProgress = computed(() => {
+    const list = this.getListItems();
+    const total = list.length;
+
+    if (total === 0) return 0;
+
+    const checked = list.filter((item) => item.checked).length;
+    return Math.round((checked / total) * 100);
+  });
 
   #parseItems() {
     return JSON.parse(localStorage.getItem(ELocalStorage.MY_LIST) || '[]');
@@ -60,34 +70,26 @@ export class List {
 
   public updateItemCheckbox(newItem: { id: string; checked: boolean }) {
     this.#setListItems.update((oldValue: IListItems[]) => {
-      oldValue.filter((res) => {
+      return oldValue.map((res) => {
         if (res.id === newItem.id) {
-          res.checked = newItem.checked;
-          return res;
+          return { ...res, checked: newItem.checked };
         }
-
         return res;
       });
-
-      return oldValue;
-    });
+  });
 
     return this.#updateLocalStorage();
   }
 
   public updateItemText(newItem: { id: string; value: string }) {
     this.#setListItems.update((oldValue: IListItems[]) => {
-      oldValue.filter((res) => {
+      return oldValue.map((res) => {
         if (res.id === newItem.id) {
-          res.value = newItem.value;
-          return res;
+          return { ...res, value: newItem.value };
         }
-
         return res;
       });
-
-      return oldValue;
-    });
+  });
 
     return this.#updateLocalStorage();
   }

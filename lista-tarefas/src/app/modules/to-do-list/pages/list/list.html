@@ -23,6 +23,20 @@
   (outputAddListItem)="getInputAndAddItem($event)"
 />
 
+<section class="progress-container">
+  <div class="progress-info">
+    <span>Progresso das Tarefas</span>
+    <span>{{ listProgress() }}%</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div 
+      class="progress-bar-fill" 
+      [style.width.%]="listProgress()"
+      [class.completed]="listProgress() === 100">
+    </div>
+  </div>
+</section>
+
 <main class="container">
   @if(listItemsStage('pending').length){
   <h2>Pendências</h2>
