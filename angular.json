@@ -20,10 +20,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": {              
-            "base": "dist/lista-tarefas", 
-            "browser": ""                 
-            },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -40,6 +36,8 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/ListaTarefaas_Angular/",
+              "deployUrl": "/ListaTarefaas_Angular/",
               "budgets": [
                 {
                   "type": "initial",
